@@ -1,0 +1,36 @@
+trivia
+short package intro
+   go through vignette with some extensions
+go through datasets from different industries
+
+people can ask questions (ask a few days before)
+
+Topics:
+github
+docker/rocker
+setting up RStudio/Shiny in cloud (AWS, google cloud etc.)
+Markdown/knitr
+
+Participate in hackathons
+
+What folks want from the group:
+See different things
+intro stuff
+
+Look into speakeasy for location
+6 to ??
+
+Plan couple of months ahead
+
+Have some pre-made content to fill periodically
+
+Feb:
+Reticulate: 30 min Shankar
+Review of Rstudio conf: 1h Will Landau
+
+March:
+Intro topic (data basics) - Todd
+
+Somewhere: (Alex)
+using R with SQL, dbi
+Start to finish build your theme for ggplot
