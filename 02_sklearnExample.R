@@ -46,6 +46,22 @@ confmat = sklearn$metrics$confusion_matrix(y_model, target_test)
 plot_ly(x = as.character(seq(1, 10)), y = as.character(seq(1, 10)),
          z = confmat, type = "heatmap")
 
+
+# Use the seaborn plot code as is
+py_run_string("
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def pltconf(confmat):
+    sns.heatmap(confmat, square=True, annot=True, cbar=False)
+    plt.xlabel('predicted value')
+    plt.ylabel('true value')
+    plt.show()
+                        ")
+
+main$pltconf(confmat)
+
 # MNIST digit classification with Random Forest
 # https://jakevdp.github.io/PythonDataScienceHandbook/05.08-random-forests.html
 #
@@ -59,3 +75,5 @@ confmat = sklearn$metrics$confusion_matrix(y_model, target_test)
 
 plot_ly(x = as.character(seq(1, 10)), y = as.character(seq(1, 10)),
         z = confmat, type = "heatmap")
+
+main$pltconf(confmat)

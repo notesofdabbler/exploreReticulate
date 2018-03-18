@@ -26,7 +26,7 @@ y = torch$randn(N, D_out)$type(dtype)
 w1 = torch$randn(D_in, H)$type(dtype)
 w2 = torch$randn(H, D_out)$type(dtype)
 
-relu = py_run_string("
+py_run_string("
 def relu(grad_h, h):
     grad_h[h < 0] = 0
     return grad_h
@@ -52,7 +52,7 @@ for (t in 1:500) {
   
 
   
-  grad_h = relu$relu(grad_h, h)
+  grad_h = main$relu(grad_h, h)
   grad_w1 = x$t()$mm(grad_h)
   
   # Update weights using gradient descent

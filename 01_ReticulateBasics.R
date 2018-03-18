@@ -2,10 +2,11 @@
 # load library
 library(reticulate)
 
+# specifiy python configuration to use
+# For some reason if I try running this after py_config(), it doesn't take effect
+use_python("/Users/shanki/anaconda3/bin/python", required = TRUE)
 # check python configuration
 py_config()
-# specifiy python configuration to use
-use_python("/Users/shanki/anaconda3/bin/python", required = TRUE)
 
 # import main and builtin modules
 main = import_main()
@@ -19,6 +20,7 @@ os = import("os")
 os$getcwd()
 os$chdir("/Users")
 
+# get help on a python function
 py_help(os$chdir)
 
 getwd()
@@ -27,17 +29,20 @@ os$getcwd()
 
 # work with python functions, example is string splitting
 x = "a b c"
-r_to_py(x)$split()
+
+# r_to_py converts x to a python string
+py$type(r_to_py(x))
+r_to_py(x)$split() # not quite a typical R object yet
 class(r_to_py(x)$split())
 
-py_to_r(r_to_py(x)$split())
+py_to_r(r_to_py(x)$split()) # manual conversion to R character object
 class(py_to_r(r_to_py(x)$split()))
 
 # run python code using py_run_string
-main = py_run_string("x = 10")
+py_run_string("x = 10")
 main$x
 
-main = py_run_string("y = x * 2")
+py_run_string("y = x * 2")
 main$y
 
 # example using numpy
@@ -52,10 +57,10 @@ x
 np_array(x)
 class(np_array(x))
 
-x = np_array(seq(1,12), c(3,4))
+x = np$reshape(seq(1,12), c(3,4))
 x
 
-x = np_array(seq(1,12), c(3,4), order = "C")
+x = np$reshape(seq(1,12), c(3,4), order = "C")
 x
 
 # iterators
@@ -96,3 +101,23 @@ iter_next(iter)
 iter_next(iter)
 iter_next(iter)
 
+# movement between r dataframe and pandas dataframe
+data(mtcars)
+head(mtcars)
+summary(mtcars)
+
+pd = import("pandas")
+py$type(r_to_py(mtcars))
+
+pymtcars = r_to_py(mtcars)
+pymtcars$head()
+pymtcars$describe()
+
+cntrypop = pd$read_html("http://www.worldometers.info/world-population/population-by-country/")
+cntrypopdf = py_to_r(cntrypop[[1]])
+
+library(ggplot2)
+library(dplyr)
+ggplot(cntrypopdf %>% arrange(desc(`Population (2018)`)) %>% slice(1:20)) + 
+  geom_bar(aes(x = reorder(`Country (or dependency)`, `Population (2018)`), y = `Population (2018)`), stat = "identity") + 
+   coord_flip() + xlab("") + theme_bw()
