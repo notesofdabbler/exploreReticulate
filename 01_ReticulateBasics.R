@@ -1,3 +1,5 @@
+# based of
+# https://rstudio.github.io/reticulate/articles/calling_python.html
 
 # load library
 library(reticulate)
@@ -10,7 +12,7 @@ py_config()
 
 # import main and builtin modules
 main = import_main()
-py = import_builtins()
+bi = import_builtins()
 
 # import numpy
 np = import("numpy")
@@ -19,6 +21,7 @@ np = import("numpy")
 os = import("os")
 os$getcwd()
 os$chdir("/Users")
+getwd()
 
 # get help on a python function
 py_help(os$chdir)
@@ -31,7 +34,7 @@ os$getcwd()
 x = "a b c"
 
 # r_to_py converts x to a python string
-py$type(r_to_py(x))
+bi$type(r_to_py(x))
 r_to_py(x)$split() # not quite a typical R object yet
 class(r_to_py(x)$split())
 
@@ -40,14 +43,15 @@ class(py_to_r(r_to_py(x)$split()))
 
 # run python code using py_run_string
 py_run_string("x = 10")
-main$x
+py$x
 
 py_run_string("y = x * 2")
-main$y
+py$y
 
 # example using numpy
 np$arange(10)
 x = np$cumsum(np$arange(10))
+x
 class(x)
 
 py_help(np$arange)
@@ -60,14 +64,14 @@ class(np_array(x))
 x = np$reshape(seq(1,12), c(3,4))
 x
 
-x = np$reshape(seq(1,12), c(3,4), order = "C")
+x = np$reshape(seq(1,12), c(3L,4L), order = "C")
 x
 
 # iterators
-iterate(py$iter(c(1,2,3,4)), print)
-iterate(py$iter('abcd'), print)
+iterate(bi$iter(c(1,2,3,4)), print)
+iterate(bi$iter('abcd'), print)
 
-x = py$iter(c(1,2,3,4))
+x = bi$iter(c(1,2,3,4))
 while (TRUE) {
   item = iter_next(x)
   print(item)
@@ -76,7 +80,7 @@ while (TRUE) {
   }
 }
 
-x = py$iter(py$range(1000L))
+x = bi$iter(bi$range(1000L))
 while (TRUE)  {
   val = iter_next(x)
   print(val)
@@ -107,7 +111,7 @@ head(mtcars)
 summary(mtcars)
 
 pd = import("pandas")
-py$type(r_to_py(mtcars))
+bi$type(r_to_py(mtcars))
 
 pymtcars = r_to_py(mtcars)
 pymtcars$head()

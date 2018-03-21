@@ -10,7 +10,7 @@ use_python("/Users/shanki/anaconda3/bin/python", required = TRUE)
 py_config()
 
 main = import_main()
-py = import_builtins()
+bi = import_builtins()
 np = import("numpy")
 sklearn = import("sklearn")
 
@@ -34,14 +34,20 @@ target_train = target[train]
 data_test = data[-train,]
 target_test = target[-train]
 
-model = sklearn$naive_bayes$GaussianNB()
+GaussianNB = import("sklearn.naive_bayes")$GaussianNB
+
+model = GaussianNB()
 model$fit(data_train, target_train)
 y_model = model$predict(data_test)
 
-acc = sklearn$metrics$accuracy_score(y_model, target_test)
+accuracy_score = import("sklearn.metrics")$accuracy_score
+
+acc = accuracy_score(y_model, target_test)
 acc
 
-confmat = sklearn$metrics$confusion_matrix(y_model, target_test)
+confusion_matrix = import("sklearn.metrics")$confusion_matrix
+
+confmat = confusion_matrix(y_model, target_test)
 
 plot_ly(x = as.character(seq(1, 10)), y = as.character(seq(1, 10)),
          z = confmat, type = "heatmap")
@@ -60,18 +66,21 @@ def pltconf(confmat):
     plt.show()
                         ")
 
-main$pltconf(confmat)
+py$pltconf(confmat)
 
 # MNIST digit classification with Random Forest
 # https://jakevdp.github.io/PythonDataScienceHandbook/05.08-random-forests.html
 #
-model = sklearn$ensemble$RandomForestClassifier(n_estimators = 1000L)
+
+RandomForestClassifier = import("sklearn.ensemble")$RandomForestClassifier
+
+model = RandomForestClassifier(n_estimators = 1000L)
 model$fit(data_train, target_train)
 ypred = model$predict(data_test)
 
 cat(sklearn$metrics$classification_report(ypred, target_test))
 
-confmat = sklearn$metrics$confusion_matrix(y_model, target_test)
+confmat = confusion_matrix(y_model, target_test)
 
 plot_ly(x = as.character(seq(1, 10)), y = as.character(seq(1, 10)),
         z = confmat, type = "heatmap")
